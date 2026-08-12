@@ -240,14 +240,18 @@
   const navigation = document.querySelector("#main-nav");
 
   if (menuButton && navigation) {
+    const menuLabel = menuButton.querySelector(".sr-only");
+
     const closeMenu = () => {
       body.classList.remove("nav-open");
       menuButton.setAttribute("aria-expanded", "false");
+      if (menuLabel) menuLabel.textContent = "Mở menu";
     };
 
     menuButton.addEventListener("click", () => {
       const isOpen = body.classList.toggle("nav-open");
       menuButton.setAttribute("aria-expanded", String(isOpen));
+      if (menuLabel) menuLabel.textContent = isOpen ? "Đóng menu" : "Mở menu";
     });
 
     navigation.addEventListener("click", (event) => {
@@ -256,6 +260,13 @@
 
     window.addEventListener("resize", () => {
       if (window.innerWidth > 760) closeMenu();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && body.classList.contains("nav-open")) {
+        closeMenu();
+        menuButton.focus({ preventScroll: true });
+      }
     });
   }
 
