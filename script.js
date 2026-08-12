@@ -1,3 +1,112 @@
+Skip to content
+lqhoang01
+seahorse
+Repository navigation
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security and quality
+Insights
+Settings
+Files
+Go to file
+t
+T
+images
+index.html
+script.js
+style.css
+vercel.json
+seahorse
+/
+script.js
+in
+main
+
+Edit
+
+Preview
+Indent mode
+
+Spaces
+Indent size
+
+2
+Line wrap mode
+
+No wrap
+Editing script.js file contents
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
 (() => {
   "use strict";
 
@@ -66,224 +175,5 @@
 
   if (!reduceMotion.matches && "IntersectionObserver" in window) {
     const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-
-        const item = entry.target;
-        item.classList.add("is-entering");
-        window.setTimeout(() => item.classList.remove("is-entering"), 900);
-        observer.unobserve(item);
-      });
-    }, { rootMargin: "0px 0px -20%", threshold: 0.08 });
-
-    revealItems.forEach((item, index) => {
-      item.style.setProperty("--reveal-delay", `${(index % 4) * 55}ms`);
-      revealObserver.observe(item);
-    });
-  }
-
-  if (intro) {
-    const introCore = intro.querySelector("[data-intro-core]");
-    const introLogo = intro.querySelector("[data-intro-logo]");
-    const siteLogo = document.querySelector(".brand-logo");
-    const particles = intro.querySelector("[data-intro-particles]");
-    let finishTimer;
-    let removeTimer;
-    let safetyTimer;
-    let pointerFrame;
-    let isClosing = false;
-    let isRemoved = false;
-
-    body.classList.add("intro-active");
-
-    if (introLogo && siteLogo) {
-      introLogo.src ||= siteLogo.currentSrc || siteLogo.src;
-    }
-
-    if (particles && !reduceMotion.matches) {
-      const fragment = document.createDocumentFragment();
-
-      for (let index = 0; index < 24; index += 1) {
-        const particle = document.createElement("i");
-        const size = 3 + Math.random() * 10;
-        particle.style.setProperty("--x", `${Math.random() * 100}%`);
-        particle.style.setProperty("--z", `${-220 + Math.random() * 440}px`);
-        particle.style.setProperty("--size", `${size.toFixed(1)}px`);
-        particle.style.setProperty("--delay", `${(-Math.random() * 7).toFixed(2)}s`);
-        particle.style.setProperty("--duration", `${(5 + Math.random() * 5).toFixed(2)}s`);
-        fragment.appendChild(particle);
-      }
-
-      particles.appendChild(fragment);
-    }
-
-    const resetTilt = () => {
-      if (!introCore) return;
-      introCore.style.setProperty("--intro-rx", "0deg");
-      introCore.style.setProperty("--intro-ry", "0deg");
-    };
-
-    const tiltIntro = (event) => {
-      if (!introCore || reduceMotion.matches || isClosing) return;
-
-      const x = event.clientX / window.innerWidth - 0.5;
-      const y = event.clientY / window.innerHeight - 0.5;
-      window.cancelAnimationFrame(pointerFrame);
-      pointerFrame = window.requestAnimationFrame(() => {
-        introCore.style.setProperty("--intro-rx", `${(-y * 8).toFixed(2)}deg`);
-        introCore.style.setProperty("--intro-ry", `${(x * 10).toFixed(2)}deg`);
-      });
-    };
-
-    const removeIntro = (moveFocus) => {
-      if (isRemoved) return;
-      isRemoved = true;
-      window.clearTimeout(finishTimer);
-      window.clearTimeout(removeTimer);
-      window.clearTimeout(safetyTimer);
-      intro.hidden = true;
-      intro.remove();
-      body.classList.remove("intro-active", "intro-leaving");
-      document.removeEventListener("keydown", handleIntroKeydown);
-      window.cancelAnimationFrame(pointerFrame);
-
-      if (moveFocus) {
-        document.querySelector(".brand")?.focus({ preventScroll: true });
-      }
-    };
-
-    const closeIntro = (moveFocus = false) => {
-      if (isClosing) return;
-      isClosing = true;
-      window.clearTimeout(finishTimer);
-      resetTilt();
-      intro.setAttribute("aria-hidden", "true");
-      intro.classList.add("is-leaving");
-      body.classList.add("intro-leaving");
-      removeTimer = window.setTimeout(() => removeIntro(moveFocus), reduceMotion.matches ? 30 : 950);
-    };
-
-    function handleIntroKeydown(event) {
-      if (event.key === "Escape") closeIntro(true);
-    }
-
-    intro.addEventListener("pointermove", tiltIntro);
-    intro.addEventListener("pointerleave", resetTilt);
-    document.addEventListener("keydown", handleIntroKeydown);
-
-    finishTimer = window.setTimeout(
-      () => closeIntro(false),
-      reduceMotion.matches ? 120 : 3900
-    );
-
-    // Last-resort cleanup for throttled tabs or interrupted CSS animations.
-    safetyTimer = window.setTimeout(
-      () => removeIntro(false),
-      reduceMotion.matches ? 300 : 5200
-    );
-
-    window.addEventListener("pagehide", () => {
-      window.clearTimeout(finishTimer);
-      window.clearTimeout(removeTimer);
-      if (intro.isConnected) removeIntro(false);
-    }, { once: true });
-  }
-
-  const menuButton = document.querySelector(".menu-toggle");
-  const navigation = document.querySelector("#main-nav");
-
-  if (menuButton && navigation) {
-    const closeMenu = () => {
-      body.classList.remove("nav-open");
-      menuButton.setAttribute("aria-expanded", "false");
-    };
-
-    menuButton.addEventListener("click", () => {
-      const isOpen = body.classList.toggle("nav-open");
-      menuButton.setAttribute("aria-expanded", String(isOpen));
-    });
-
-    navigation.addEventListener("click", (event) => {
-      if (event.target.closest("a")) closeMenu();
-    });
-
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 760) closeMenu();
-    });
-  }
-
-  const coachesDialog = document.querySelector("#coaches-dialog");
-  const coachesOpenButton = document.querySelector("[data-coaches-open]");
-  const coachesCloseButton = document.querySelector("[data-coaches-close]");
-
-  if (coachesDialog && coachesOpenButton && coachesCloseButton) {
-    let closeDialogTimer;
-    let isDialogClosing = false;
-
-    if (coachesDialog.open && typeof coachesDialog.close === "function") {
-      coachesDialog.close();
-    }
-
-    const finishClosingCoachesDialog = () => {
-      window.clearTimeout(closeDialogTimer);
-      isDialogClosing = false;
-      coachesDialog.classList.remove("is-opening", "is-closing");
-
-      if (typeof coachesDialog.close === "function" && coachesDialog.open) {
-        coachesDialog.close();
-      } else {
-        coachesDialog.removeAttribute("open");
-      }
-
-      body.classList.remove("coaches-dialog-open");
-    };
-
-    const closeCoachesDialog = () => {
-      if (!coachesDialog.open || isDialogClosing) return;
-
-      coachesDialog.classList.remove("is-opening");
-
-      if (reduceMotion.matches) {
-        finishClosingCoachesDialog();
-        return;
-      }
-
-      isDialogClosing = true;
-      coachesDialog.classList.add("is-closing");
-      closeDialogTimer = window.setTimeout(finishClosingCoachesDialog, 240);
-    };
-
-    coachesOpenButton.addEventListener("click", () => {
-      coachesOpenButton.classList.remove("is-pressed");
-      void coachesOpenButton.offsetWidth;
-      coachesOpenButton.classList.add("is-pressed");
-
-      if (typeof coachesDialog.showModal === "function") {
-        coachesDialog.showModal();
-      } else {
-        coachesDialog.setAttribute("open", "");
-      }
-
-      coachesDialog.classList.remove("is-closing");
-      coachesDialog.classList.add("is-opening");
-      body.classList.add("coaches-dialog-open");
-      coachesCloseButton.focus({ preventScroll: true });
-    });
-
-    coachesCloseButton.addEventListener("click", closeCoachesDialog);
-    coachesDialog.addEventListener("cancel", (event) => {
-      event.preventDefault();
-      closeCoachesDialog();
-    });
-    coachesDialog.addEventListener("close", () => {
-      window.clearTimeout(closeDialogTimer);
-      isDialogClosing = false;
-      coachesDialog.classList.remove("is-opening", "is-closing");
-      body.classList.remove("coaches-dialog-open");
-      coachesOpenButton.focus({ preventScroll: true });
-    });
-    coachesDialog.addEventListener("click", (event) => {
-      if (event.target === coachesDialog) closeCoachesDialog();
-    });
-  }
-})();
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+ 
