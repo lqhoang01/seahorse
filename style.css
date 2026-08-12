@@ -341,7 +341,7 @@ footer { background: var(--ink); color: white; overflow: hidden; padding: 80px 5
   .coach-copy h3 { font-size: clamp(29px,9vw,40px); }
   .tracks { grid-template-columns: 1fr; }
   .track { min-height: 620px; padding: 46px 20px; }
-  .track h3 { font-size: 30vw; }
+  .track h3 { font-size: clamp(64px,22vw,100px); line-height: .95; margin-bottom: 26px; }
   .track ul { grid-template-columns: 1fr; }
   .achievements,.showcase { padding: 92px 20px; }
   .achievement-row { gap: 11px; grid-template-columns: 58px 64px minmax(0,1fr) 20px; padding: 25px 0; }
